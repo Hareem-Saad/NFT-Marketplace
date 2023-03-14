@@ -5,6 +5,8 @@ This project demonstrates a basic Hardhat use case. It comes with a sample contr
 Try running some of the following tasks:
 
 ```shell
+git init
+git pull https://github.com/Hareem-Saad/Hardhat-With-Foundry-Template.git
 npm install
 forge build
 forge test
