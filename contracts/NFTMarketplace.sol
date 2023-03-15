@@ -30,6 +30,12 @@ contract NFTMarketplace is Ownable {
 
     constructor() {}
 
+    /**
+     * @notice lists the nft of the seller for sale
+     * @param _tokenId the id for the token you want to list
+     * @param _price the price for the token
+     * @param contractAdress the address of the contract which contains the nft
+     */
     function sell(uint256 _tokenId, uint256 _price, address contractAdress) public {
         IERC721 nft = IERC721(contractAdress);
         require(nft.ownerOf(_tokenId) == msg.sender, "NFTMarketplace: sender does not own token");
@@ -48,6 +54,10 @@ contract NFTMarketplace is Ownable {
         emit ListingCreated(_tokenId, msg.sender, _price);
     }
 
+    /**
+     * @notice removes the listing
+     * @param _listingId listing id of the nft
+     */
     function removeListing(uint256 _listingId) public {
         Listing storage listing = listings[_listingId];
 
@@ -60,6 +70,10 @@ contract NFTMarketplace is Ownable {
         emit ListingRemoved(listing.tokenId, listing.nftOwner);
     }
 
+    /**
+     * @notice allows buyer to buy nft, deducts 2% tax from seller and buyer
+     * @param _listingId listing id of the nft buyer wants to buy
+     */
     function buyListing(uint256 _listingId) public payable {
         Listing storage listing = listings[_listingId];
         
@@ -90,6 +104,9 @@ contract NFTMarketplace is Ownable {
         emit ListingSold(listing.tokenId, listing.nftOwner, msg.sender, listing.price);
     }
 
+    /**
+     * @notice allows owner to withdraw tax
+     */
     function withdraw() public onlyOwner {
         uint taxValue = taxAmount;
         taxAmount = 0;
@@ -101,6 +118,13 @@ contract NFTMarketplace is Ownable {
     //     return this.onERC721Received.selector;
     // }
 
+    /**
+     * @notice calculates tax on the given price and returns the adjusted price
+     * @param price the price of the nft
+     * @return price_ the price of the nft
+     * @return _tax the tax on the price of the nft
+     * @return adjustedPrice tax + price
+     */
     function getPriceForListing(uint256 price) public view returns (uint256 price_, uint256 _tax, uint256 adjustedPrice) {
         uint256 __tax = (price * tax) / 100;
         uint256 _adjustedPrice = price + __tax;
