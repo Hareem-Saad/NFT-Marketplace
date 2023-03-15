@@ -13,10 +13,10 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract Nft is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds; // Tracking the no of tokens minted
-    address public contractAddress; // Address to allow NFT to be interacted with
+    // address public contractAddress; // Address to allow NFT to be interacted with
 
-    constructor(address marketPlaceAddress) ERC721("OpenStore Tokens", "OST") {
-        contractAddress = marketPlaceAddress;
+    constructor() ERC721("TEST", "TST") {
+        // contractAddress = marketPlaceAddress;
     }
 
     // This function is called when the token is to be created
@@ -29,7 +29,7 @@ contract Nft is ERC721URIStorage {
         return newTokenId;
     }
 
-    function giveApprovalForToken(uint256 tokenId) public {
-        approve(contractAddress, tokenId); // set the contract as an approved token
-    }
+    // function giveApprovalForToken(uint256 tokenId) public {
+    //     approve(contractAddress, tokenId); // set the contract as an approved token
+    // }
 }
